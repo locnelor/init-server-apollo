@@ -9,6 +9,7 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
+import { RedisCacheModule } from './redis-cache/redis-cache.module';
 
 @Module({
   imports: [
@@ -19,7 +20,11 @@ import { UserModule } from './user/user.module';
         TITLE: Joi.string().default("title"),
         DESCRIPTION: Joi.string().default("description"),
         VERSION: Joi.string().default("1.0"),
-        EXPIRES_IN: Joi.number().default(60 * 60 * 24 * 14)
+        EXPIRES_IN: Joi.number().default(60 * 60 * 24 * 14),
+        REDIS_PORT: Joi.number().default(6379),
+        REDIS_HOST: Joi.string().default("localhost"),
+        REDIS_PASSWORD: Joi.string(),
+        CACHE_TTL: Joi.number().default(6 * 60 * 60)
       })
     }),
     GraphQLModule.forRoot({
@@ -31,6 +36,7 @@ import { UserModule } from './user/user.module';
       playground: true,
       // context: ({ req, res }) => ({ req, res }),
     }),
+    RedisCacheModule,
     AuthModule,
     PrismaModule,
     UserModule,

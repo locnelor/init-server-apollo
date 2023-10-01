@@ -6,6 +6,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from 'src/user/user.module';
+import { RedisCacheModule } from 'src/redis-cache/redis-cache.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserModule } from 'src/user/user.module';
       },
       inject: [ConfigService]
     }),
+    RedisCacheModule,
     UserModule
   ],
   providers: [JwtStrategy, AuthService, AuthResolver]
