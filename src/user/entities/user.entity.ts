@@ -13,8 +13,8 @@ export class User implements user {
   @Field()
   updateAt: Date;
 
-  @Field()
-  profileId: number;
+  @Field({ nullable: true })
+  token?: string
 
   @Field()
   account: string;
