@@ -19,21 +19,19 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
 }
 
 export class GqlAuthGuard extends AuthGuard("jwt") {
-  getRequest(context: ExecutionContext) {
-    const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req;
-  }
   canActivate(context: ExecutionContext) {
-    const req = this.getRequest(context)
+    const ctx = GqlExecutionContext.create(context);
+    const { req } = ctx.getContext();
     return super.canActivate(
       new ExecutionContextHost([req]),
     );
   }
-  handleRequest(err: any, user: any, info: any) {
-    if (!!err || !user) {
+
+  handleRequest(err: any, user: any) {
+    if (err || !user) {
       throw err || new AuthenticationError('请先登录！');
     }
-    return user
+    return user;
   }
 }
 

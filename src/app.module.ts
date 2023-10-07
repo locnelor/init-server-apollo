@@ -34,7 +34,14 @@ import { RedisCacheModule } from './redis-cache/redis-cache.module';
         path: join(__dirname, 'types/graphql.ts'),
       },
       playground: true,
-      // context: ({ req, res }) => ({ req, res }),
+      context: ({ req, connection = {} as any }) => {
+        return {
+          req: req || connection.context,
+          trackErrors(errors) {
+            console.log(errors)
+          },
+        };
+      },
     }),
     RedisCacheModule,
     AuthModule,
