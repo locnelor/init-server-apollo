@@ -19,20 +19,27 @@ type User {
   id: Int!
   createAt: DateTime!
   updateAt: DateTime!
-  profileId: Float!
+  token: String
   account: String!
   profile: Profile!
 }
 
 type Query {
+  getInfo: User!
   auth(account: String!, password: String!): User!
   user(id: Int!): User!
 }
 
 type Mutation {
+  sigin(siginInput: SiginInput!): User!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
+}
+
+input SiginInput {
+  account: String!
+  password: String!
 }
 
 input CreateUserInput {
