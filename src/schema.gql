@@ -7,7 +7,6 @@ type Profile {
   createAt: DateTime!
   updateAt: DateTime!
   userId: Float!
-  password: String!
 }
 
 """
@@ -24,22 +23,24 @@ type User {
   profile: Profile!
 }
 
+type Test {
+  now: Float!
+  msg: String!
+}
+
 type Query {
   getInfo: User!
   auth(account: String!, password: String!): User!
+  test: Test!
+  userList: [User!]!
   user(id: Int!): User!
 }
 
 type Mutation {
-  sigin(siginInput: SiginInput!): User!
+  sigin(account: String!, password: String!): User!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
-}
-
-input SiginInput {
-  account: String!
-  password: String!
 }
 
 input CreateUserInput {

@@ -15,6 +15,5 @@ export class Profile implements profile {
     @Field()
     userId: number;
 
-    @Field()
     password: string;
 }
