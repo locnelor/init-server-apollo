@@ -2,10 +2,10 @@ import { Body, Controller, ForbiddenException, Get, Post, UseGuards } from "@nes
 import { CurrentUser, JwtAuthGuard } from "./auth.guard";
 import { User } from "src/user/entities/user.entity";
 import { PrismaService } from "src/prisma/prisma.service";
-import { SiginInput } from "./dto/sigin.input";
 import { cryptoPassword } from "src/libs/hash";
 import { AuthService } from "./auth.service";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Args } from "@nestjs/graphql";
 
 
 @Controller("api/auth")
@@ -29,7 +29,8 @@ export class AuthController {
     @Post("auth")
     @ApiOperation({ summary: "" })
     async auth(
-        @Body() { account, password }: SiginInput
+        @Args("account") account: string,
+        @Args("password") password: string
     ) {
         const user: User = await this.prismaService.user.findUnique({
             where: {
@@ -51,7 +52,8 @@ export class AuthController {
     @Post("sigin")
     @ApiOperation({ summary: "" })
     async sigin(
-        @Body() { account, password }: SiginInput
+        @Args("account") account: string,
+        @Args("password") password: string
     ) {
         const exist = !!await this.prismaService.user.count({
             where: { account }
