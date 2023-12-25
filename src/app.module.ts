@@ -24,7 +24,8 @@ import { RedisCacheModule } from './redis-cache/redis-cache.module';
         REDIS_PORT: Joi.number().default(6379),
         REDIS_HOST: Joi.string().default("localhost"),
         REDIS_PASSWORD: Joi.string(),
-        CACHE_TTL: Joi.number().default(6 * 60 * 60)
+        CACHE_TTL: Joi.number().default(6 * 60 * 60),
+        REDIS_DB: Joi.number()
       })
     }),
     GraphQLModule.forRoot({
