@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { RedisCacheModule } from './redis-cache/redis-cache.module';
+import { WechartModule } from './wechart/wechart.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -25,7 +27,9 @@ import { RedisCacheModule } from './redis-cache/redis-cache.module';
         REDIS_HOST: Joi.string().default("localhost"),
         REDIS_PASSWORD: Joi.string(),
         CACHE_TTL: Joi.number().default(6 * 60 * 60),
-        REDIS_DB: Joi.number()
+        REDIS_DB: Joi.number(),
+        WX_APPID: Joi.string(),
+        WX_SECRET: Joi.string(),
       })
     }),
     GraphQLModule.forRoot({
@@ -48,6 +52,8 @@ import { RedisCacheModule } from './redis-cache/redis-cache.module';
     AuthModule,
     PrismaModule,
     UserModule,
+    WechartModule,
+    CommentModule
   ],
   controllers: [AppController],
   providers: [AppService],

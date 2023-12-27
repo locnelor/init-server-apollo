@@ -1,36 +1,36 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/user.entity';
 import { GqlAuthGuard, GqlCurrentUser } from './auth.guard';
 import { cryptoPassword } from 'src/libs/hash';
 import { ForbiddenError } from '@nestjs/apollo';
 import { AuthService } from './auth.service';
 import { Test } from './entitys/test.entity';
 
-@Resolver(of => User)
+@Resolver(of => UserEntity)
 export class AuthResolver {
     constructor(
         private readonly prismaService: PrismaService,
         private readonly authService: AuthService
     ) { }
 
-    @Query(() => User)
+    @Query(() => UserEntity)
     @UseGuards(GqlAuthGuard)
     getInfo(
-        @GqlCurrentUser() user: User
+        @GqlCurrentUser() user: UserEntity
     ) {
         console.log(user)
         return user;
     }
 
-    @Query(() => User)
+    @Query(() => UserEntity)
     @UseGuards(GqlAuthGuard)
     async auth(
         @Args("account") account: string,
         @Args("password") password: string
     ) {
-        const user: User = await this.prismaService.user.findUnique({
+        const user: UserEntity = await this.prismaService.user.findUnique({
             where: {
                 account,
                 profile: {
@@ -46,12 +46,12 @@ export class AuthResolver {
         return user;
     }
 
-    @Mutation(() => User)
+    @Mutation(() => UserEntity)
     async sigin(
         @Args("account") account: string,
         @Args("password") password: string
     ) {
-        const user: User = await this.prismaService.user.create({
+        const user: UserEntity = await this.prismaService.user.create({
             data: {
                 account,
                 profile: {
@@ -77,7 +77,7 @@ export class AuthResolver {
         }
     }
 
-    @Query(() => [User])
+    @Query(() => [UserEntity])
     userList() {
         return this.prismaService.user.findMany({
             orderBy: {

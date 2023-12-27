@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 import { JwtService } from '@nestjs/jwt';
 import { cryptoPassword } from 'src/libs/hash';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +23,7 @@ export class AuthService {
         })
     }
 
-    getToken(user: User) {
+    getToken(user: UserEntity) {
         const payload = {
             crypto: cryptoPassword(user.profile.password),
             sub: user.id

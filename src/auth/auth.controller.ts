@@ -1,6 +1,6 @@
 import { Body, Controller, ForbiddenException, Get, Post, UseGuards } from "@nestjs/common";
 import { CurrentUser, JwtAuthGuard } from "./auth.guard";
-import { User } from "src/user/entities/user.entity";
+import { UserEntity } from "src/user/user.entity";
 import { PrismaService } from "src/prisma/prisma.service";
 import { cryptoPassword } from "src/libs/hash";
 import { AuthService } from "./auth.service";
@@ -20,7 +20,7 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @ApiOperation({ summary: "" })
     getInfo(
-        @CurrentUser() user: User
+        @CurrentUser() user: UserEntity
     ) {
         console.log(user)
         return user;
@@ -32,7 +32,7 @@ export class AuthController {
         @Args("account") account: string,
         @Args("password") password: string
     ) {
-        const user: User = await this.prismaService.user.findUnique({
+        const user: UserEntity = await this.prismaService.user.findUnique({
             where: {
                 account,
                 profile: {
@@ -61,7 +61,7 @@ export class AuthController {
         if (exist) {
             throw new ForbiddenException
         }
-        const user: User = await this.prismaService.user.create({
+        const user: UserEntity = await this.prismaService.user.create({
             data: {
                 account,
                 profile: {
