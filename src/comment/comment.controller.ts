@@ -26,11 +26,27 @@ export class CommentController {
             }
         })
     }
+    @Get(":id/getComment")
+    getCommentById(
+        @Param("id") id: number
+    ) {
+        id = Number(id);
+        return this.prismaService.comment.findFirst({
+            where: {
+                parent: null,
+                id
+            },
+            include: {
+                user: true
+            }
+        })
+    }
 
     @Get(":id/getReply")
     getReply(
         @Param("id") id: number
     ) {
+        id = Number(id);
         return this.prismaService.comment.findMany({
             orderBy: {
                 id: "desc"
@@ -52,6 +68,16 @@ export class CommentController {
         },
         @CurrentUser() user: UserEntity
     ) {
+        let parent = undefined;
+        reply = Number(reply)
+        console.log(context, reply)
+        if (!!reply) {
+            parent = {
+                connect: {
+                    id: reply
+                }
+            }
+        }
         return this.prismaService.comment.create({
             data: {
                 context,
@@ -60,11 +86,7 @@ export class CommentController {
                         id: user.id
                     }
                 },
-                parent: {
-                    connect: {
-                        id: reply
-                    }
-                }
+                parent
             }
         })
     }

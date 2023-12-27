@@ -22,6 +22,7 @@ export class WechartController {
         }
     ) {
         const { session_key, openid } = await this.wechartService.jscode2session(code);
+        console.log(openid)
         const user = await this.prismaService.user.findFirst({
             where: {
                 openid
