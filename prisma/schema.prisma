@@ -17,6 +17,7 @@ model User {
   profile     Profile?
   account     String?   @unique
   openid      String?   @unique
+  role        Int       @default(0)
   session_key String?
   Comment     Comment[]
 }

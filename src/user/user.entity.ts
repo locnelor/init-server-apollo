@@ -4,6 +4,8 @@ import { ProfileEntity } from './profile.entity';
 
 @ObjectType()
 export class UserEntity implements User {
+  @Field(() => Int)
+  role: number;
 
   @Field({ nullable: true })
   openid: string;

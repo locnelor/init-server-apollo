@@ -11,10 +11,6 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# file
-*.env
-*.lock
-
 # OS
 .DS_Store
 

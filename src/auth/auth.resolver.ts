@@ -6,7 +6,7 @@ import { GqlAuthGuard, GqlCurrentUser } from './auth.guard';
 import { cryptoPassword } from 'src/libs/hash';
 import { ForbiddenError } from '@nestjs/apollo';
 import { AuthService } from './auth.service';
-import { Test } from './entitys/test.entity';
+import { Test } from './test.entity';
 
 @Resolver(of => UserEntity)
 export class AuthResolver {
