@@ -1,19 +1,11 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { Profile } from "@prisma/client"
+import { Profile } from "@prisma/client";
+import { BaseEntity } from "src/baseEntity";
+
+
 
 @ObjectType()
-export class ProfileEntity implements Profile {
+export class ProfileEntity extends BaseEntity implements Profile{
     @Field()
-    id: number;
-
-    @Field()
-    createAt: Date;
-
-    @Field()
-    updateAt: Date;
-
-    @Field()
-    userId: number;
-
     password: string;
 }

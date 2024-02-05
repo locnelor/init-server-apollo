@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { cryptoPassword } from 'src/libs/hash';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -10,19 +10,17 @@ export class AuthService {
         private readonly jwtService: JwtService,
         private readonly prismaService: PrismaService
     ) { }
-
     public validateUser(account: string, password: string) {
         return this.prismaService.user.findUnique({
             where: {
                 account,
                 profile: {
-                    password: cryptoPassword(password)
+                    password
                 }
             },
             include: { profile: true }
         })
     }
-
     getToken(user: UserEntity) {
         const payload = {
             crypto: cryptoPassword(user.profile.password),
@@ -38,7 +36,9 @@ export class AuthService {
             where: {
                 id: sub
             },
-            include: { profile: true }
+            include: {
+                profile: true,
+            }
         })
         if (!user) throw NotFoundException
         if (cryptoPassword(user.profile.password) !== crypto) throw ForbiddenException
