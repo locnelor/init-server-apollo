@@ -1295,6 +1295,16 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
+"@ts-morph/common@~0.22.0":
+  version "0.22.0"
+  resolved "https://registry.npmmirror.com/@ts-morph/common/-/common-0.22.0.tgz#8951d451622a26472fbc3a227d6c3a90e687a683"
+  integrity sha512-HqNBuV/oIlMKdkLshXd1zKBqNQCsuPEsgQOkfFQ/eUKjRlwndXW1AjN9LVkBEIukm00gGXSRmfkl0Wv5VXLnlw==
+  dependencies:
+    fast-glob "^3.3.2"
+    minimatch "^9.0.3"
+    mkdirp "^3.0.1"
+    path-browserify "^1.0.1"
+
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
   resolved "https://registry.npmmirror.com/@tsconfig/node10/-/node10-1.0.9.tgz#df4907fc07a886922637b15e02d4cebc4c0021b2"
@@ -2342,6 +2352,11 @@ co@^4.6.0:
   resolved "https://registry.npmmirror.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==
 
+code-block-writer@^12.0.0:
+  version "12.0.0"
+  resolved "https://registry.npmmirror.com/code-block-writer/-/code-block-writer-12.0.0.tgz#4dd58946eb4234105aff7f0035977b2afdc2a770"
+  integrity sha512-q4dMFMlXtKR3XNBHyMHt/3pwYNA69EDk00lloMOaaUMKPUXBw6lpXtbu3MMVG6/uOihGnRDOlkyqsONEUj60+w==
+
 collect-v8-coverage@^1.0.0:
   version "1.0.2"
   resolved "https://registry.npmmirror.com/collect-v8-coverage/-/collect-v8-coverage-1.0.2.tgz#c0b29bcd33bcd0779a1344c2136051e6afd3d9e9"
@@ -2950,7 +2965,7 @@ fast-diff@^1.1.2:
   resolved "https://registry.npmmirror.com/fast-diff/-/fast-diff-1.3.0.tgz#ece407fa550a64d638536cd727e129c61616e0f0"
   integrity sha512-VxPP4NqbUjj6MaAOafWeUn2cXWLcCtljklUtZf0Ind4XQ+QPtmA0b18zZy0jIQx+ExRVCR/ZQpBmik5lXshNsw==
 
-fast-glob@3.3.2, fast-glob@^3.2.9:
+fast-glob@3.3.2, fast-glob@^3.2.9, fast-glob@^3.3.2:
   version "3.3.2"
   resolved "https://registry.npmmirror.com/fast-glob/-/fast-glob-3.3.2.tgz#a904501e57cfdd2ffcded45e99a54fef55e46129"
   integrity sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==
@@ -4352,7 +4367,7 @@ mimic-fn@^2.1.0:
   resolved "https://registry.npmmirror.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-minimatch@9.0.3, minimatch@^9.0.1:
+minimatch@9.0.3, minimatch@^9.0.1, minimatch@^9.0.3:
   version "9.0.3"
   resolved "https://registry.npmmirror.com/minimatch/-/minimatch-9.0.3.tgz#a6e00c3de44c3a542bfaae70abfc22420a6da825"
   integrity sha512-RHiac9mvaRw0x3AYRgDC1CxAP7HTcNrrECeA8YYJeWnpo+2Q5CegtZjaotWTWxDG3UeGA1coE05iH1mPjT/2mg==
@@ -4394,6 +4409,11 @@ mkdirp@^0.5.4:
   integrity sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==
   dependencies:
     minimist "^1.2.6"
+
+mkdirp@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npmmirror.com/mkdirp/-/mkdirp-3.0.1.tgz#e44e4c5607fb279c168241713cc6e0fea9adcb50"
+  integrity sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==
 
 ms@2.0.0:
   version "2.0.0"
@@ -4628,6 +4648,11 @@ passport@^0.7.0:
     passport-strategy "1.x.x"
     pause "0.0.1"
     utils-merge "^1.0.1"
+
+path-browserify@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmmirror.com/path-browserify/-/path-browserify-1.0.1.tgz#d98454a9c3753d5790860f16f68867b9e46be1fd"
+  integrity sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==
 
 path-exists@^4.0.0:
   version "4.0.0"
@@ -5459,6 +5484,14 @@ ts-loader@^9.4.3:
     micromatch "^4.0.0"
     semver "^7.3.4"
     source-map "^0.7.4"
+
+ts-morph@^21.0.1:
+  version "21.0.1"
+  resolved "https://registry.npmmirror.com/ts-morph/-/ts-morph-21.0.1.tgz#712302a0f6e9dbf1aa8d9cf33a4386c4b18c2006"
+  integrity sha512-dbDtVdEAncKctzrVZ+Nr7kHpHkv+0JDJb2MjjpBaj8bFeCkePU9rHfMklmhuLFnpeq/EJZk2IhStY6NzqgjOkg==
+  dependencies:
+    "@ts-morph/common" "~0.22.0"
+    code-block-writer "^12.0.0"
 
 ts-node@^10.9.1:
   version "10.9.2"

@@ -2,7 +2,7 @@ import { ObjectType, Field, Float } from '@nestjs/graphql';
 
 
 @ObjectType()
-export class Test {
+export class TestEntity {
     @Field(() => Float)
     now: number
 

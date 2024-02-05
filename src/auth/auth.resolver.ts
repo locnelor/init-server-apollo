@@ -7,6 +7,7 @@ import { cryptoPassword } from 'src/libs/hash';
 import { ForbiddenError } from '@nestjs/apollo';
 import { AuthService } from './auth.service';
 import { Test } from '@nestjs/testing';
+import { TestEntity } from './test.entity';
 
 @Resolver(of => UserEntity)
 export class AuthResolver {
@@ -44,7 +45,7 @@ export class AuthResolver {
         return user;
     }
 
-    @Query(() => Test)
+    @Query(() => TestEntity)
     async test() {
         return {
             now: Date.now(),
