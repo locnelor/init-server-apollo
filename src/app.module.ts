@@ -8,6 +8,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { RedisCacheModule } from '@app/redis-cache';
 
 @Module({
   imports: [
@@ -26,27 +27,44 @@ import { UserModule } from './user/user.module';
         REDIS_DB: Joi.number(),
         WX_APPID: Joi.string(),
         WX_SECRET: Joi.string(),
-      })
+      }),
+      envFilePath: ".env"
     }),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      subscriptions: {
+        'graphql-ws': {
+          onConnect: (context: any) => {
+            const {
+              connectionParams,
+              extra
+            } = context;
+            const { Authorization } = connectionParams;
+            extra.Authorization = Authorization;
+          },
+        }
+      },
+      autoSchemaFile: join(process.cwd(), 'apps/bugwozi-main/src/schema.gql'),
       definitions: {
         path: join(__dirname, 'types/graphql.ts'),
       },
       playground: true,
-      context: ({ req, connection = {} as any }) => {
+      context: ({ req, connection = {} as any, extra }) => {
+        const raw = (req || connection.context || extra.request)
+        if (!!extra?.Authorization && !!raw.headers && !raw.headers.authorization) {
+          raw.headers.authorization = extra?.Authorization
+        }
         return {
-          req: req || connection.context,
+          req: raw,
           trackErrors(errors) {
             console.log(errors)
           },
         };
       },
     }),
+    RedisCacheModule,
     AuthModule,
     UserModule,
-
   ],
   controllers: [AppController],
   providers: [AppService],
