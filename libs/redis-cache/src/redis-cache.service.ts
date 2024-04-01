@@ -8,19 +8,23 @@ export class RedisCacheService {
         @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) { }
 
-    public get(key: string) {
-        return this.cacheManager.get(key)
+    public get<T>(key: string) {
+        return this.cacheManager.get<T>(key)
     }
 
-    public set(data: any, key: string, ttl?: number) {
-        this.cacheManager.set(key, data, ttl)
+    public async set(data: any, key: string, ttl?: number) {
+        await this.cacheManager.set(key, data, ttl)
     }
 
-    public async cbk(callback: () => any, key: string, ttl?: number) {
-        const res = await this.cacheManager.get(key);
+    public async cbk<T>(callback: () => T, key: string, ttl?: number) {
+        const res = await this.cacheManager.get<T>(key);
         if (!!res) return res;
         const data = await callback();
         await this.cacheManager.set(key, data, ttl)
         return data;
+    }
+
+    public del(key: string) {
+        return this.cacheManager.del(key)
     }
 }

@@ -2,25 +2,36 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { json } from 'express';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
+import { LoggingInterceptor } from '@app/logger/logging.interceptor';
+import { PrismaService } from '@app/prisma';
+import { FileService } from '@app/file';
 
+const bodyParser = require('body-parser');
+require('body-parser-xml')(bodyParser);
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    // logger,
+    // logger: true,
     // httpsOptions: {
-    //   key: "",
-    //   cert: ""
-    // }
+    //   key: FileService.getSSLKey(),
+    //   cert: FileService.getSSLPem()
+    // },
+    rawBody: true
   });
   const configService: ConfigService = app.get(ConfigService)
   app.enableCors({
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000"
+    ],
     credentials: true
   })
-
-  app.use(json({ limit: "50mb" }))
+  app.useGlobalInterceptors(new LoggingInterceptor(new PrismaService))
+  app.use(bodyParser.xml());
+  // app.use(bodyParser.urlencoded({ extended: true }));
+  app.useBodyParser('text');
+  app.useBodyParser("raw");
+  app.useBodyParser('json', { limit: '10mb' });
 
   app.useGlobalPipes(new ValidationPipe)
   // set prefix

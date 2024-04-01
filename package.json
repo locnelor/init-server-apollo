@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -39,6 +39,7 @@
     "class-validator": "^0.14.1",
     "graphql": "^16.8.1",
     "joi": "^17.12.1",
+    "moment": "^2.30.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "prisma": "^5.9.1",
@@ -75,7 +76,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -83,7 +84,20 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@app/file(|/.*)$": "<rootDir>/libs/file/src/$1",
+      "^@app/hash(|/.*)$": "<rootDir>/libs/hash/src/$1",
+      "^@app/logger(|/.*)$": "<rootDir>/libs/logger/src/$1",
+      "^@app/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1",
+      "^@app/redis-cache(|/.*)$": "<rootDir>/libs/redis-cache/src/$1",
+      "^@app/request(|/.*)$": "<rootDir>/libs/request/src/$1",
+      "^@app/utils(|/.*)$": "<rootDir>/libs/utils/src/$1"
+    }
   }
 }

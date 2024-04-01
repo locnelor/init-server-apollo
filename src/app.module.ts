@@ -6,7 +6,6 @@ import { join } from 'path';
 import * as Joi from "joi"
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
-import { RedisCacheModule } from './redis-cache/redis-cache.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 
@@ -45,7 +44,6 @@ import { UserModule } from './user/user.module';
         };
       },
     }),
-    RedisCacheModule,
     AuthModule,
     UserModule,
 

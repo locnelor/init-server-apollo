@@ -12,19 +12,19 @@ import { redisStore } from 'cache-manager-redis-store';
       // @ts-ignore
       useFactory: (config: ConfigService) => {
         return ({
-          ttl: config.get("CACHE_TTL"),
           store: async () => await redisStore({
             socket: {
               host: config.get("REDIS_HOST"),
               port: config.get("REDIS_PORT")
             },
-            password: config.get("REDIS_PASSWORD")
-          })
+            password: config.get("REDIS_PASSWORD"),
+            ttl: config.get("CACHE_TTL"),
+          }),
         })
       }
     }),
   ],
   providers: [RedisCacheService],
-  exports: [RedisCacheService]
+  exports: [RedisCacheService],
 })
 export class RedisCacheModule { }

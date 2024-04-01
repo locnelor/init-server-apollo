@@ -16,6 +16,50 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/file": [
+        "libs/file/src"
+      ],
+      "@app/file/*": [
+        "libs/file/src/*"
+      ],
+      "@app/hash": [
+        "libs/hash/src"
+      ],
+      "@app/hash/*": [
+        "libs/hash/src/*"
+      ],
+      "@app/logger": [
+        "libs/logger/src"
+      ],
+      "@app/logger/*": [
+        "libs/logger/src/*"
+      ],
+      "@app/prisma": [
+        "libs/prisma/src"
+      ],
+      "@app/prisma/*": [
+        "libs/prisma/src/*"
+      ],
+      "@app/redis-cache": [
+        "libs/redis-cache/src"
+      ],
+      "@app/redis-cache/*": [
+        "libs/redis-cache/src/*"
+      ],
+      "@app/request": [
+        "libs/request/src"
+      ],
+      "@app/request/*": [
+        "libs/request/src/*"
+      ],
+      "@app/utils": [
+        "libs/utils/src"
+      ],
+      "@app/utils/*": [
+        "libs/utils/src/*"
+      ]
+    }
   }
 }
