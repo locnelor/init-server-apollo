@@ -12,10 +12,10 @@ export class FileService {
     ) { }
     public static readonly Root = cwd();
     public static getSSLKey() {
-        return readFileSync(join(this.Root, "keys", "api.bugwozi.top.key"))
+        return readFileSync(join(this.Root, "keys", "ssh.key"))
     }
     public static getSSLPem() {
-        return readFileSync(join(this.Root, "keys", "api.bugwozi.top.pem"))
+        return readFileSync(join(this.Root, "keys", "ssh.pem"))
     }
     private readonly Assets = join(FileService.Root, "assets")
 }
