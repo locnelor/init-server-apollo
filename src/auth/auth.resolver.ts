@@ -1,19 +1,18 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { UserEntity } from 'src/user/user.entity';
 import { GqlAuthGuard, GqlCurrentUser } from './auth.guard';
-import { cryptoPassword } from 'src/libs/hash';
 import { ForbiddenError } from '@nestjs/apollo';
 import { AuthService } from './auth.service';
-import { Test } from '@nestjs/testing';
-import { TestEntity } from './test.entity';
+import { PrismaService } from '@app/prisma';
+import { UserEntity } from '@app/prisma/user.entity/user.entity';
+import { HashService } from '@app/hash';
 
 @Resolver(of => UserEntity)
 export class AuthResolver {
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly hashService: HashService
     ) { }
 
     @Query(() => UserEntity)
@@ -33,7 +32,7 @@ export class AuthResolver {
             where: {
                 account,
                 profile: {
-                    password: cryptoPassword(password)
+                    password: this.hashService.cryptoPassword(password)
                 }
             },
             include: {
@@ -44,13 +43,4 @@ export class AuthResolver {
         user.token = this.authService.getToken(user).access_token
         return user;
     }
-
-    @Query(() => TestEntity)
-    async test() {
-        return {
-            now: Date.now(),
-            msg: "hello world"
-        }
-    }
-
 }

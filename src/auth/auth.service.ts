@@ -1,14 +1,15 @@
+import { HashService } from '@app/hash';
+import { PrismaService } from '@app/prisma';
+import { UserEntity } from '@app/prisma/user.entity/user.entity';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { cryptoPassword } from 'src/libs/hash';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { UserEntity } from 'src/user/user.entity';
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly prismaService: PrismaService
+        private readonly prismaService: PrismaService,
+        private readonly hashService: HashService
     ) { }
     public validateUser(account: string, password: string) {
         return this.prismaService.user.findUnique({
@@ -23,7 +24,7 @@ export class AuthService {
     }
     getToken(user: UserEntity) {
         const payload = {
-            crypto: cryptoPassword(user.profile.password),
+            crypto: this.hashService.cryptoPassword(user.profile.password),
             sub: user.id
         };
         return {
@@ -41,7 +42,7 @@ export class AuthService {
             }
         })
         if (!user) throw NotFoundException
-        if (cryptoPassword(user.profile.password) !== crypto) throw ForbiddenException
+        if (this.hashService.cryptoPassword(user.profile.password) !== crypto) throw ForbiddenException
         return user;
     }
 }

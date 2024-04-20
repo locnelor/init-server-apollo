@@ -7,10 +7,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from 'src/user/user.module';
 import { PrismaModule } from '@app/prisma';
 import { RedisCacheModule } from '@app/redis-cache';
+import { HashModule } from '@app/hash';
 
 @Module({
   imports: [
     PrismaModule,
+    HashModule,
     ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

@@ -1,9 +1,9 @@
+import { UserEntity } from "@app/prisma/user.entity/user.entity";
 import { AuthenticationError } from "@nestjs/apollo";
 import { ExecutionContext, UnauthorizedException, createParamDecorator } from "@nestjs/common";
 import { ExecutionContextHost } from "@nestjs/core/helpers/execution-context-host";
 import { GqlExecutionContext } from "@nestjs/graphql";
 import { AuthGuard } from "@nestjs/passport";
-import { UserEntity } from "src/user/user.entity";
 
 
 export class JwtAuthGuard extends AuthGuard("jwt") {
