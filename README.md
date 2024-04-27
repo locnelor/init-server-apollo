@@ -35,4 +35,4 @@ CACHE_TTL = 21600
 
 ## apollo-server
 
-很喜欢graphql图形查询
+很喜欢graphql
