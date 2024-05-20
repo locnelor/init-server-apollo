@@ -1,11 +1,12 @@
-import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Ip, Req, UseGuards } from '@nestjs/common';
+import { Args, Context, GqlExecutionContext, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GqlAuthGuard, GqlCurrentUser } from './auth.guard';
 import { ForbiddenError } from '@nestjs/apollo';
 import { AuthService } from './auth.service';
 import { PrismaService } from '@app/prisma';
 import { UserEntity } from '@app/prisma/user.entity/user.entity';
 import { HashService } from '@app/hash';
+import { Request } from 'express';
 
 @Resolver(of => UserEntity)
 export class AuthResolver {
@@ -26,7 +27,12 @@ export class AuthResolver {
     @Mutation(() => UserEntity)
     async auth(
         @Args("account") account: string,
-        @Args("password") password: string
+        @Args("password") password: string,
+        @Context() {
+            req: {
+                ip
+            }
+        }
     ) {
         const user: UserEntity = await this.prismaService.user.findUnique({
             where: {

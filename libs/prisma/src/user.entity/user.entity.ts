@@ -5,6 +5,9 @@ import { ProfileEntity } from "../profile.entity/profile.entity";
 
 @ObjectType()
 export class UserEntity extends BaseEntity implements User {
+    @Field({ nullable: true })
+    loginIp: string;
+
     @Field()
     hash_key: string;
 

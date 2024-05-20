@@ -22,7 +22,7 @@ import { RedisCacheModule } from '@app/redis-cache';
         EXPIRES_IN: Joi.number().default(60 * 60 * 24 * 14),
         REDIS_PORT: Joi.number().default(6379),
         REDIS_HOST: Joi.string().default("localhost"),
-        REDIS_PASSWORD: Joi.string(),
+        REDIS_PASSWORD: Joi.string().default(""),
         CACHE_TTL: Joi.number().default(6 * 60 * 60),
         REDIS_DB: Joi.number(),
         WX_APPID: Joi.string(),
@@ -49,13 +49,15 @@ import { RedisCacheModule } from '@app/redis-cache';
         path: join(__dirname, 'types/graphql.ts'),
       },
       playground: true,
-      context: ({ req, connection = {} as any, extra }) => {
+
+      context: ({ req, res, connection = {} as any, extra }) => {
         const raw = (req || connection.context || extra.request)
         if (!!extra?.Authorization && !!raw.headers && !raw.headers.authorization) {
           raw.headers.authorization = extra?.Authorization
         }
         return {
           req: raw,
+          res,
           trackErrors(errors) {
             console.log(errors)
           },
