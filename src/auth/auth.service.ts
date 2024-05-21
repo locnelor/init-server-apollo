@@ -59,8 +59,8 @@ export class AuthService {
     }
     getToken(user: UserEntity) {
         const payload = {
-            crypto: this.hashService.cryptoPassword(user.profile.password),
-            sub: user.id
+            crypto: this.hashService.cryptoPassword(user.profile.password + user.loginIp),
+            sub: user.id,
         };
         return {
             access_token: this.jwtService.sign(payload),
@@ -77,7 +77,7 @@ export class AuthService {
             }
         })
         if (!user) throw NotFoundException
-        if (this.hashService.cryptoPassword(user.profile.password) !== crypto) throw ForbiddenException
+        if (this.hashService.cryptoPassword(user.profile.password + user.loginIp) !== crypto) throw ForbiddenException
         return user;
     }
 }
