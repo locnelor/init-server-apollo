@@ -7,9 +7,7 @@ export class AppController {
 
   @Get()
   getHello(
-    @Ip() ip: string
   ): string {
-    console.log(ip)
     return this.appService.getHello();
   }
 }
