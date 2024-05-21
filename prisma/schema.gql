@@ -28,7 +28,7 @@ type UserEntity {
 }
 
 type Query {
-  currentUser: UserEntity!
+  viewer: UserEntity!
 }
 
 type Mutation {

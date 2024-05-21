@@ -17,7 +17,7 @@ export class AuthResolver {
 
     @Query(() => UserEntity)
     @UseGuards(GqlAuthGuard)
-    currentUser(
+    viewer(
         @GqlCurrentUser() user: UserEntity
     ) {
         return user;
@@ -40,7 +40,7 @@ export class AuthResolver {
                 profile: true
             }
         })
-        if (!find) throw ForbiddenError
+        if (!find) throw new ForbiddenError("找不到用户")
         const user: UserEntity = await this.prismaService.user.update({
             where: {
                 id: find.id
