@@ -42,6 +42,6 @@ model Logger {
   name     String
   ip       String
   status   Int
-  message  String?
+  message  String?  @db.LongText
   time     Int
 }
