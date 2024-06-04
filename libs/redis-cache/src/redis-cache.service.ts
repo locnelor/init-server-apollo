@@ -1,30 +1,11 @@
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
-import { Cache } from "cache-manager";
-
+import { InjectRedis } from '@nestjs-modules/ioredis';
+import { Redis } from "ioredis"
+import { Injectable } from '@nestjs/common';
 @Injectable()
-export class RedisCacheService {
+export class RedisCacheService extends Redis {
     constructor(
-        @Inject(CACHE_MANAGER) private cacheManager: Cache
-    ) { }
-
-    public get<T>(key: string) {
-        return this.cacheManager.get<T>(key)
-    }
-
-    public async set(data: any, key: string, ttl?: number) {
-        await this.cacheManager.set(key, data, ttl)
-    }
-
-    public async cbk<T>(callback: () => T, key: string, ttl?: number) {
-        const res = await this.cacheManager.get<T>(key);
-        if (!!res) return res;
-        const data = await callback();
-        await this.cacheManager.set(key, data, ttl)
-        return data;
-    }
-
-    public del(key: string) {
-        return this.cacheManager.del(key)
+        @InjectRedis() public readonly redis: Redis
+    ) {
+        super(redis.options);
     }
 }
