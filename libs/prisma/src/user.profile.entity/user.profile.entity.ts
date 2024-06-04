@@ -1,8 +1,8 @@
 import { ObjectType } from "@nestjs/graphql";
 import { BaseEntity } from "../base.entity/base.entity";
-import { Profile } from "@prisma/client";
+import { user_profile } from "@prisma/client";
 
 @ObjectType()
-export class ProfileEntity extends BaseEntity implements Profile {
+export class UserProfileEntity extends BaseEntity implements user_profile {
     password: string;
 }

@@ -4,10 +4,10 @@ import { GqlAuthGuard, GqlCurrentUser } from './auth.guard';
 import { ForbiddenError } from '@nestjs/apollo';
 import { AuthService } from './auth.service';
 import { PrismaService } from '@app/prisma';
-import { UserEntity } from '@app/prisma/user.entity/user.entity';
 import { HashService } from '@app/hash';
+import { SysUserEntity } from '@app/prisma/sys.user.entity/sys.user.entity';
 
-@Resolver(of => UserEntity)
+@Resolver()
 export class AuthResolver {
     constructor(
         private readonly prismaService: PrismaService,
@@ -15,21 +15,21 @@ export class AuthResolver {
         private readonly hashService: HashService
     ) { }
 
-    @Query(() => UserEntity)
+    @Query(() => SysUserEntity)
     @UseGuards(GqlAuthGuard)
     viewer(
-        @GqlCurrentUser() user: UserEntity
+        @GqlCurrentUser() user: SysUserEntity
     ) {
         return user;
     }
 
-    @Mutation(() => UserEntity)
+    @Mutation(() => SysUserEntity)
     async auth(
         @Args("account") account: string,
         @Args("password") password: string,
         @Context() { req: { ip } }
     ) {
-        const find: UserEntity = await this.prismaService.user.findUnique({
+        const find: SysUserEntity = await this.prismaService.sys_user.findUnique({
             where: {
                 account,
                 profile: {
@@ -41,7 +41,7 @@ export class AuthResolver {
             }
         })
         if (!find) throw new ForbiddenError("找不到用户")
-        const user: UserEntity = await this.prismaService.user.update({
+        const user: SysUserEntity = await this.prismaService.sys_user.update({
             where: {
                 id: find.id
             },

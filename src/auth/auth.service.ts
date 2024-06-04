@@ -1,6 +1,6 @@
 import { HashService } from '@app/hash';
 import { PrismaService } from '@app/prisma';
-import { UserEntity } from '@app/prisma/user.entity/user.entity';
+import { SysUserEntity } from '@app/prisma/sys.user.entity/sys.user.entity';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
@@ -8,46 +8,19 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly prismaService: PrismaService,
+        private readonly prisma: PrismaService,
         private readonly hashService: HashService
     ) {
-        this.init(
-            "locnelor",
-            "locnelor",
-            "locnelor",
-            2147483647
-        )
+        this.init()
     }
 
     public async init(
-        account: string,
-        name: string,
-        password: string,
-        role: number
     ) {
-        if (await this.prismaService.user.findUnique({
-            where: {
-                account
-            }
-        })) return;
-        await this.prismaService.user.create({
-            data: {
-                account,
-                role,
-                name,
-                hash_key: this.hashService.createUid([name, account, password]),
-                profile: {
-                    create: {
-                        password: this.hashService.cryptoPassword(password),
-
-                    }
-                }
-            }
-        })
+        this.prisma
     }
 
     public validateUser(account: string, password: string) {
-        return this.prismaService.user.findUnique({
+        return this.prisma.sys_user.findUnique({
             where: {
                 account,
                 profile: {
@@ -57,7 +30,7 @@ export class AuthService {
             include: { profile: true }
         })
     }
-    getToken(user: UserEntity) {
+    getToken(user: SysUserEntity) {
         const payload = {
             crypto: this.hashService.cryptoPassword(user.profile.password + user.loginIp),
             sub: user.id,
@@ -68,14 +41,24 @@ export class AuthService {
     }
 
     async validate({ crypto, sub }) {
-        const user = await this.prismaService.user.findUnique({
+        const user = await this.prisma.sys_user.findUnique({
             where: {
                 id: sub
             },
             include: {
                 profile: true,
+                // role: {
+                //     include: {
+                //         sys_menu_on_role: {
+                //             include: {
+                //                 menu: true
+                //             }
+                //         }
+                //     }
+                // }
             }
         })
+
         if (!user) throw NotFoundException
         if (this.hashService.cryptoPassword(user.profile.password + user.loginIp) !== crypto) throw ForbiddenException
         return user;

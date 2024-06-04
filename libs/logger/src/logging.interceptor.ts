@@ -25,7 +25,7 @@ export class LoggingInterceptor implements NestInterceptor {
     private async save(data: any, now: number) {
         const id = this.getId()
         const time = Date.now() - now
-        await this.prismaService.logger.create({
+        await this.prismaService.sys_logger.create({
             data: {
                 id,
                 time,

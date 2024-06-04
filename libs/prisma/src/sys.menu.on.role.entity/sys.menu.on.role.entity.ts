@@ -1,0 +1,18 @@
+import { Field, Int } from "@nestjs/graphql";
+import { sys_menu_on_role } from "@prisma/client";
+import { SysRoleEntity } from "../sys.role.entity/sys.role.entity";
+import { SysMenuEntity } from "../sys.menu.entity/sys.menu.entity";
+
+export class SysMenuOnRoleEntity implements sys_menu_on_role {
+    @Field(() => Int)
+    sys_roleId: number;
+
+    @Field(() => SysRoleEntity, { nullable: true })
+    role?: SysRoleEntity
+
+    @Field(() => Int)
+    sys_menuId: number;
+
+    @Field(() => SysMenuEntity, { nullable: true })
+    menu?: SysMenuEntity
+}
