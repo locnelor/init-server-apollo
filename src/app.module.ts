@@ -27,6 +27,10 @@ import { RedisCacheModule } from '@app/redis-cache';
         REDIS_DB: Joi.number(),
         WX_APPID: Joi.string(),
         WX_SECRET: Joi.string(),
+        ADMIN_NAME: Joi.string(),
+        ADMIN_ROLE: Joi.string(),
+        ADMIN_PASSWORD: Joi.string(),
+        ADMIN_ACCOUNT: Joi.string()
       }),
       envFilePath: ".env"
     }),

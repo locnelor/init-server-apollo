@@ -32,9 +32,7 @@ export class AuthResolver {
         const find: SysUserEntity = await this.prismaService.sys_user.findUnique({
             where: {
                 account,
-                profile: {
-                    password: this.hashService.cryptoPassword(password)
-                }
+                password: this.hashService.cryptoPassword(password)
             },
             include: {
                 profile: true

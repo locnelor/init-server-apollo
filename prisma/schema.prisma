@@ -19,6 +19,7 @@ model sys_user {
   name           String
   profile        user_profile @relation(fields: [user_profileId], references: [id])
   loginIp        String?
+  password       String
   user_profileId Int          @unique
   sys_logger     sys_logger[]
   role           sys_role     @relation(fields: [sys_roleId], references: [id])
@@ -26,10 +27,10 @@ model sys_user {
 }
 
 model user_profile {
-  id       Int       @id @default(autoincrement())
-  createAt DateTime  @default(now())
-  updateAt DateTime  @default(now()) @updatedAt
-  password String
+  id       Int      @id @default(autoincrement())
+  createAt DateTime @default(now())
+  updateAt DateTime @default(now()) @updatedAt
+
   sys_user sys_user?
 }
 

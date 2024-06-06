@@ -7,6 +7,8 @@ import { SysLoggerEntity } from "../sys.logger.entity/sys.logger.entity";
 
 @ObjectType()
 export class SysUserEntity extends BaseEntity implements sys_user {
+    password: string;
+
     @Field()
     hash_key: string;
 

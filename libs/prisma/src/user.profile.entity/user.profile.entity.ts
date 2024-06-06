@@ -4,5 +4,5 @@ import { user_profile } from "@prisma/client";
 
 @ObjectType()
 export class UserProfileEntity extends BaseEntity implements user_profile {
-    password: string;
+
 }
