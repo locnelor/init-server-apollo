@@ -30,7 +30,9 @@ import { RedisCacheModule } from '@app/redis-cache';
         ADMIN_NAME: Joi.string(),
         ADMIN_ROLE: Joi.string(),
         ADMIN_PASSWORD: Joi.string(),
-        ADMIN_ACCOUNT: Joi.string()
+        ADMIN_ACCOUNT: Joi.string(),
+        INIT_APOLLO_CONFIG: Joi.string(),
+        USER_NAME: Joi.string()
       }),
       envFilePath: ".env"
     }),

@@ -69,6 +69,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/utils/tsconfig.lib.json"
       }
+    },
+    "sys-config": {
+      "type": "library",
+      "root": "libs/sys-config",
+      "entryFile": "index",
+      "sourceRoot": "libs/sys-config/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/sys-config/tsconfig.lib.json"
+      }
     }
   }
 }

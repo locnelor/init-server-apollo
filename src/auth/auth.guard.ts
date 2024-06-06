@@ -74,36 +74,6 @@ export const QueryPower = 0x1;
 export const EditPower = 0x2;
 export const RemovePower = 0x4;
 export const InsertPower = 0x8;
-export const gqlAuthPowerGuardTest = () => {
-  return class GqlAuthPowerGuardextends extends AuthGuard("jwt") {
-    constructor(
-      public readonly prisma: PrismaService
-    ) {
-      super()
-    }
-    canActivate(context: ExecutionContext) {
-      const ctx = GqlExecutionContext.create(context);
-      const { req } = ctx.getContext();
-      return super.canActivate(
-        new ExecutionContextHost([req]),
-      );
-    }
-    handleRequest<TUser extends SysUserEntity>(err: any, user: TUser) {
-      if (err || !user) {
-        throw err || new AuthenticationError('请先登录！');
-      }
-      console.log(this.prisma)
-      if (user) {
-
-      }
-      return user
-      // const [begin, end] = this.power;
-      // const powers = getPowers(user.role, begin, end);
-      // if (powers < this.safeRange) throw new AuthenticationError("权限不足")
-      // return user;
-    }
-  }
-}
 export class GqlAuthPowerGuard extends AuthGuard("jwt") {
   constructor(
     private readonly type: string,

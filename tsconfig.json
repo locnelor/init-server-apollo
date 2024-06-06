@@ -59,6 +59,12 @@
       ],
       "@app/utils/*": [
         "libs/utils/src/*"
+      ],
+      "@app/sys-config": [
+        "libs/sys-config/src"
+      ],
+      "@app/sys-config/*": [
+        "libs/sys-config/src/*"
       ]
     }
   }

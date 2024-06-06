@@ -24,6 +24,8 @@
     "@app/request/(.*)": "<rootDir>/../libs/request/src/$1",
     "@app/request": "<rootDir>/../libs/request/src",
     "@app/utils/(.*)": "<rootDir>/../libs/utils/src/$1",
-    "@app/utils": "<rootDir>/../libs/utils/src"
+    "@app/utils": "<rootDir>/../libs/utils/src",
+    "@app/sys-config/(.*)": "<rootDir>/../libs/sys-config/src/$1",
+    "@app/sys-config": "<rootDir>/../libs/sys-config/src"
   }
 }

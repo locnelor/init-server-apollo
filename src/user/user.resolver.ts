@@ -2,7 +2,7 @@ import { PrismaService } from '@app/prisma';
 import { SysUserEntity } from '@app/prisma/sys.user.entity/sys.user.entity';
 import { UseGuards } from '@nestjs/common';
 import { Query, Resolver } from '@nestjs/graphql';
-import { GqlAuthPowerGuard, QueryPower, gqlAuthPowerGuardTest } from 'src/auth/auth.guard';
+import { GqlAuthPowerGuard, QueryPower } from 'src/auth/auth.guard';
 
 @Resolver()
 export class UserResolver {
@@ -11,7 +11,7 @@ export class UserResolver {
     ) { }
 
     @Query(() => [SysUserEntity])
-    @UseGuards(gqlAuthPowerGuardTest())
+    // @UseGuards(new GqlAuthPowerGuard())
     selUsers() {
 
         return this.prisma.sys_user.findMany({});

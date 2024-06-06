@@ -7,12 +7,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from 'src/user/user.module';
 import { PrismaModule } from '@app/prisma';
 import { HashModule } from '@app/hash';
+import { SysConfigModule } from '@app/sys-config';
 
 @Module({
   imports: [
     PrismaModule,
     HashModule,
     ConfigModule,
+    SysConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
