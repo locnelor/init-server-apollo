@@ -54,7 +54,7 @@ model sys_menu {
   updateAt         DateTime           @default(now()) @updatedAt
   name             String
   path             String             @unique
-  role             Int                @default(3)
+  role             Int
   comment          String?            @db.LongText
   parent           sys_menu?          @relation("SysMenuParent", fields: [parentId], references: [id])
   parentId         Int?
