@@ -28,4 +28,7 @@ export class SysMenuEntity extends BaseEntity implements sys_menu {
 
     @Field(() => [SysMenuOnRoleEntity], { nullable: true })
     sys_menu_on_role?: SysMenuOnRoleEntity[]
+
+    @Field(() => Boolean)
+    visible: boolean
 }

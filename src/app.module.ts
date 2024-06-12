@@ -9,6 +9,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { RedisCacheModule } from '@app/redis-cache';
+import { RoleModule } from './role/role.module';
 
 @Module({
   imports: [
@@ -73,6 +74,7 @@ import { RedisCacheModule } from '@app/redis-cache';
     RedisCacheModule,
     AuthModule,
     UserModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

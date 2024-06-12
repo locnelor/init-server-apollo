@@ -60,6 +60,7 @@ model sys_menu {
   parentId         Int?
   children         sys_menu[]         @relation("SysMenuParent")
   sys_menu_on_role sys_menu_on_role[]
+  visible          Boolean            @default(false)
 }
 
 model sys_menu_on_role {
