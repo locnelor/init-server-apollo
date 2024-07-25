@@ -33,9 +33,6 @@ export class AuthResolver {
             where: {
                 account,
                 password: this.hashService.cryptoPassword(password)
-            },
-            include: {
-                profile: true
             }
         })
         if (!find) throw new ForbiddenError("找不到用户")
@@ -45,9 +42,6 @@ export class AuthResolver {
             },
             data: {
                 loginIp: ip
-            },
-            include: {
-                profile: true
             }
         })
         user.token = this.authService.getToken(user).access_token

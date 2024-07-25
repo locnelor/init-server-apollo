@@ -11,27 +11,18 @@ datasource db {
 }
 
 model sys_user {
-  id             Int          @id @default(autoincrement())
-  createAt       DateTime     @default(now())
-  updateAt       DateTime     @default(now()) @updatedAt
-  hash_key       String       @unique
-  account        String       @unique
-  name           String
-  profile        user_profile @relation(fields: [user_profileId], references: [id])
-  loginIp        String?
-  password       String
-  user_profileId Int          @unique
-  sys_logger     sys_logger[]
-  role           sys_role     @relation(fields: [sys_roleId], references: [id])
-  sys_roleId     Int
-}
-
-model user_profile {
-  id       Int      @id @default(autoincrement())
-  createAt DateTime @default(now())
-  updateAt DateTime @default(now()) @updatedAt
-
-  sys_user sys_user?
+  id         Int          @id @default(autoincrement())
+  createAt   DateTime     @default(now())
+  updateAt   DateTime     @default(now()) @updatedAt
+  hash_key   String       @unique
+  account    String       @unique
+  name       String
+  loginIp    String?
+  password   String
+  sys_logger sys_logger[]
+  role       sys_role     @relation(fields: [sys_roleId], references: [id])
+  sys_roleId Int
+  sys_group  sys_group[]
 }
 
 model sys_logger {
@@ -77,9 +68,74 @@ model sys_role {
   createAt         DateTime           @default(now())
   updateAt         DateTime           @default(now()) @updatedAt
   name             String             @unique
-  sort             Int
+  sort             Int                @default(0)
   status           Boolean            @default(true)
   comment          String?            @db.LongText
   sys_menu_on_role sys_menu_on_role[]
   sys_user         sys_user[]
+}
+
+model sys_group {
+  id         Int                  @id @default(autoincrement())
+  createAt   DateTime             @default(now())
+  updateAt   DateTime             @default(now()) @updatedAt
+  name       String
+  status     Int                  @default(0)
+  allow      Boolean
+  icon       String?
+  background String?
+  question   String?
+  hash_key   String               @unique
+  master     sys_user             @relation(fields: [sys_userId], references: [id])
+  info       sys_group_on_items[]
+  sys_userId Int
+}
+
+model sys_group_on_items {
+  group           sys_group     @relation(fields: [sys_groupId], references: [id])
+  sys_groupId     Int
+  item            sys_task_item @relation(fields: [sys_task_itemId], references: [id])
+  sys_task_itemId Int
+
+  @@id([sys_groupId, sys_task_itemId])
+}
+
+model sys_task {
+  id               Int                @id @default(autoincrement())
+  createAt         DateTime           @default(now())
+  updateAt         DateTime           @default(now()) @updatedAt
+  name             String
+  deadline         DateTime?
+  sys_task_on_item sys_task_on_item[]
+}
+
+model sys_task_on_item {
+  task            sys_task      @relation(fields: [sys_taskId], references: [id])
+  sys_taskId      Int
+  item            sys_task_item @relation(fields: [sys_task_itemId], references: [id])
+  sys_task_itemId Int
+
+  @@id([sys_task_itemId, sys_taskId])
+}
+
+model sys_task_item {
+  id                 Int                  @id @default(autoincrement())
+  createAt           DateTime             @default(now())
+  updateAt           DateTime             @default(now()) @updatedAt
+  label              String
+  order              Int                  @default(0)
+  type               String
+  regex              String?
+  minLength          Int?
+  maxLength          Int?
+  min                Float?
+  max                Float?
+  floatLength        Int?
+  suffix             String?
+  checkbox           String?
+  options            String?
+  select             String?
+  comment            String?
+  sys_task_on_item   sys_task_on_item[]
+  sys_group_on_items sys_group_on_items[]
 }

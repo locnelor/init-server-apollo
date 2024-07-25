@@ -22,8 +22,7 @@ export class AuthService {
             where: {
                 account,
                 password
-            },
-            include: { profile: true }
+            }
         })
     }
     getToken(user: SysUserEntity) {
@@ -42,7 +41,6 @@ export class AuthService {
                 id: sub
             },
             include: {
-                profile: true,
                 role: {
                     include: {
                         sys_menu_on_role: {

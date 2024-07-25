@@ -71,11 +71,6 @@ export class SysConfigService {
                     connect: {
                         id: sys_role.id
                     }
-                },
-                profile: {
-                    create: {
-
-                    }
                 }
             },
             update: {

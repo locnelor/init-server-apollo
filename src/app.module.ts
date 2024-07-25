@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { RedisCacheModule } from '@app/redis-cache';
 import { RoleModule } from './role/role.module';
+import { GroupModule } from './group/group.module';
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { RoleModule } from './role/role.module';
     AuthModule,
     UserModule,
     RoleModule,
+    GroupModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -39,14 +39,14 @@ export class LoggingInterceptor implements NestInterceptor {
         const type = context.getType();
         const ip = req.ip || "null"
         const user = (req as any)?.user;
-        const userId = user?.id || undefined
+        const sys_userId = user?.id || undefined
         const now = Date.now();
         return next
             .handle()
             .pipe(
                 tap(async () => {
                     await this.save({
-                        userId,
+                        sys_userId,
                         ip,
                         name,
                         type,
@@ -54,9 +54,8 @@ export class LoggingInterceptor implements NestInterceptor {
                     }, now)
                 }),
                 catchError((err) => {
-                    console.log(Object.keys(err))
                     this.save({
-                        userId,
+                        sys_userId,
                         ip,
                         name,
                         type,

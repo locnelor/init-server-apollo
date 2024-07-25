@@ -1,3 +1,4 @@
+import { HashService } from "@app/hash";
 import { SysUserEntity } from "@app/prisma/sys.user.entity/sys.user.entity";
 import { AuthenticationError, ForbiddenError } from "@nestjs/apollo";
 import { ExecutionContext, ForbiddenException, UnauthorizedException, createParamDecorator } from "@nestjs/common";
@@ -61,7 +62,7 @@ type MenuItem = {
   children?: MenuItem
 }
 const menuList: MenuItem[] = [];
-const start = async (list: MenuItem[], parentId = 0, parentPath = "") => {
+const start = async (list: MenuItem[], parentId = 0, parentPath = "", roleId: number) => {
   const arr: MenuItem[] = list.filter((e) => {
     if (parentPath.length === 0) return !e.path.includes("/");
     return e.path.slice(0, parentPath.length) === parentPath;
@@ -93,17 +94,81 @@ const start = async (list: MenuItem[], parentId = 0, parentPath = "") => {
         role
       }
     });
+    await client.sys_menu_on_role.upsert({
+      where: {
+        sys_roleId_sys_menuId: {
+          sys_roleId: roleId,
+          sys_menuId: menu.id
+        }
+      },
+      create: {
+        sys_menuId: menu.id,
+        sys_roleId: roleId
+      },
+      update: {}
+    })
+    console.log(`
+${menu.name}
+${menu.path}
+`)
     start(
       other,
       menu.id,
-      menu.path
+      menu.path,
+      roleId
     )
   }
 }
+const initRole = async () => {
+  console.log("初始化角色：")
+  const role = await client.sys_role.upsert({
+    where: {
+      name: process.env.ADMIN_ROLE
+    },
+    create: {
+      name: process.env.ADMIN_ROLE,
+      sort: 0
+
+    },
+    update: {}
+  })
+  return role
+}
+const makeAdmin = async (roleId: number) => {
+  console.log(`初始化管理员：`)
+  const hashServer = new HashService()
+  const user = await client.sys_user.upsert({
+    where: {
+      account: process.env.ADMIN_ACCOUNT
+    },
+    create: {
+      name: process.env.ADMIN_NAME,
+      password: hashServer.cryptoPassword(process.env.ADMIN_PASSWORD),
+      account: process.env.ADMIN_ACCOUNT,
+      role: {
+        connect: {
+          id: roleId
+        }
+      },
+      hash_key: hashServer.createUid()
+    },
+    update: {
+      role: {
+        connect: {
+          id: roleId
+        }
+      },
+    }
+  })
+  return user;
+}
 const run = () => {
   clearTimeout(time);
-  time = setTimeout(() => {
-    start(menuList)
+  time = setTimeout(async () => {
+    const role = await initRole();
+    console.log(`初始化菜单列表：`)
+    await start(menuList, 0, "", role.id)
+    await makeAdmin(role.id)
   }, 1000);
 }
 const pushMenu = (menu: MenuItem) => {
@@ -179,6 +244,9 @@ export class GqlAuthPowerGuard extends AuthGuard("jwt") {
   handleRequest<TUser extends SysUserEntity>(err: any, user: TUser) {
     if (err || !user) {
       throw err || new AuthenticationError('请先登录！');
+    }
+    if (!this.power) {
+      return user;
     }
     const {
       menu: {

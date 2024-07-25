@@ -1,7 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { BaseEntity } from "../base.entity/base.entity";
 import { sys_user } from "@prisma/client";
-import { UserProfileEntity } from "../user.profile.entity/user.profile.entity";
 import { SysRoleEntity } from "../sys.role.entity/sys.role.entity";
 import { SysLoggerEntity } from "../sys.logger.entity/sys.logger.entity";
 
@@ -20,12 +19,6 @@ export class SysUserEntity extends BaseEntity implements sys_user {
 
     @Field({ nullable: true })
     loginIp: string;
-
-    @Field(() => Int)
-    user_profileId: number;
-
-    @Field(() => UserProfileEntity, { nullable: true })
-    profile?: UserProfileEntity
 
     @Field(() => Int)
     sys_roleId: number;

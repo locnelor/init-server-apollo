@@ -44,7 +44,7 @@ export class RoleResolver {
     @UseGuards(new GqlAuthPowerGuard("查询角色相关用户", "role/getRoleUsers", [VIEW_POWER]))
     async getRoleUsers(
         @Args("id", { type: () => Int }) id: number,
-        @Args("order", { nullable: true }) order: Prisma.SortOrder = "desc",
+        @Args("order", { nullable: true }) order: string = "desc",
         @Args("skip", { nullable: true, type: () => Int }) skip = 0,
         @Args("take", { type: () => Int, nullable: true }) take = 20
     ) {
@@ -53,12 +53,12 @@ export class RoleResolver {
                 id
             }
         }
-        const count = await this.prisma.sys_user.count({
+        const total = await this.prisma.sys_user.count({
             where
         })
-        const data = await this.prisma.sys_user.findMany({
+        const data: SysUserEntity[] = await this.prisma.sys_user.findMany({
             orderBy: {
-                id: order
+                id: order as Prisma.SortOrder
             },
             where,
             skip,
@@ -68,7 +68,7 @@ export class RoleResolver {
             skip,
             take,
             data,
-            count
+            total
         }
     }
 
@@ -93,7 +93,7 @@ export class RoleResolver {
     }
 
     @Mutation(() => SysMenuOnRoleEntity)
-    @UseGuards(new GqlAuthPowerGuard("添加角色权限", "role/addMenu", [UPDATE_POWER]))
+    @UseGuards(new GqlAuthPowerGuard("添加用户角色", "role/addMenu", [UPDATE_POWER]))
     addMenu(
         @Args("menuId", { type: () => Int }) sys_menuId: number,
         @Args("roleId", { type: () => Int }) sys_roleId: number
@@ -117,7 +117,7 @@ export class RoleResolver {
     }
 
     @Mutation(() => SysMenuOnRoleEntity)
-    @UseGuards(new GqlAuthPowerGuard("删除角色权限", "role/delMenu", [DELETE_POWER]))
+    @UseGuards(new GqlAuthPowerGuard("删除用户角色", "role/delMenu", [DELETE_POWER]))
     delMenu(
         @Args("menuId", { type: () => Int }) sys_menuId: number,
         @Args("roleId", { type: () => Int }) sys_roleId: number
