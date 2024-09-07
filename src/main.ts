@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 require('body-parser-xml')(bodyParser);
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    logger: false,
+    // logger: false,
     httpsOptions: process.env.HTTPS_ENABLED === "true" ? {
       key: FileService.getSSLKey(),
       cert: FileService.getSSLPem()

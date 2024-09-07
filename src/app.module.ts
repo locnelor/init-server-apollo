@@ -11,6 +11,7 @@ import { RoleModule } from './role/role.module';
 import { UserModule } from './user/user.module';
 import * as Joi from 'joi';
 import { RedisCacheModule } from '@app/redis-cache';
+import { TestModule } from './test/test.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,7 +20,8 @@ import { RedisCacheModule } from '@app/redis-cache';
         REDIS_PORT: Joi.number(),
         REDIS_PASSWORD: Joi.string().empty(""),
         PORT: Joi.number(),
-        JWT_SECRET: Joi.string()
+        JWT_SECRET: Joi.string(),
+        JWT_EXPIRES: Joi.any()
       })
     }),
     GraphQLModule.forRootAsync({
@@ -68,6 +70,7 @@ import { RedisCacheModule } from '@app/redis-cache';
     AuthModule,
     RoleModule,
     UserModule,
+    TestModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
