@@ -1,0 +1,78 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SysMenuEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  path: String!
+  name: String!
+  role: Int!
+  comment: String
+  parentId: Int
+  parent: SysMenuEntity
+  children: [SysMenuEntity!]
+  sys_menu_on_role: [SysMenuOnRoleEntity!]
+  visible: Boolean!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type SysMenuOnRoleEntity {
+  sys_roleId: Int!
+  role: SysRoleEntity
+  sys_menuId: Int!
+  menu: SysMenuEntity
+}
+
+type SysRoleEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+  sort: Int!
+  status: Boolean!
+  comment: String
+  sys_user: [SysUserEntity!]
+  sys_menu_on_role: [SysMenuOnRoleEntity!]
+}
+
+type SysUserEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  hash_key: String!
+  account: String!
+  name: String!
+  loginIp: String
+  sys_roleId: Int!
+  role: SysRoleEntity
+  token: String
+}
+
+type SysUserPagination {
+  skip: Int!
+  take: Int!
+  total: Int!
+  data: [SysUserEntity!]!
+}
+
+type Query {
+  hello: String!
+  viewer: SysUserEntity!
+  selUsers: [SysUserEntity!]!
+  getRoles: [SysRoleEntity!]!
+  getMenuByRoleId(id: Int!): [SysRoleEntity!]!
+  getRoleUsers(id: Int!, order: String, skip: Int, take: Int): SysUserPagination!
+}
+
+type Mutation {
+  auth(account: String!, password: String!): SysUserEntity!
+  setUserRole(userId: Int!, roleId: Int!): SysUserEntity!
+  addMenu(menuId: Int!, roleId: Int!): SysMenuOnRoleEntity!
+  delMenu(menuId: Int!, roleId: Int!): SysMenuOnRoleEntity!
+}

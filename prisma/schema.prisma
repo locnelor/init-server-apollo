@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model sys_user {
+  id         Int      @id @default(autoincrement())
+  createAt   DateTime @default(now())
+  updateAt   DateTime @default(now()) @updatedAt
+  hash_key   String   @unique
+  account    String   @unique
+  name       String
+  loginIp    String?
+  password   String
+  role       sys_role @relation(fields: [sys_roleId], references: [id])
+  sys_roleId Int
+}
+
+model sys_menu {
+  id               Int                @id @default(autoincrement())
+  createAt         DateTime           @default(now())
+  updateAt         DateTime           @default(now()) @updatedAt
+  name             String
+  path             String             @unique
+  role             Int
+  comment          String?            @db.LongText
+  parent           sys_menu?          @relation("SysMenuParent", fields: [parentId], references: [id])
+  parentId         Int?
+  children         sys_menu[]         @relation("SysMenuParent")
+  sys_menu_on_role sys_menu_on_role[]
+  visible          Boolean            @default(false)
+}
+
+model sys_menu_on_role {
+  role       sys_role @relation(fields: [sys_roleId], references: [id])
+  sys_roleId Int
+  menu       sys_menu @relation(fields: [sys_menuId], references: [id])
+  sys_menuId Int
+
+  @@id([sys_roleId, sys_menuId])
+}
+
+model sys_role {
+  id               Int                @id @default(autoincrement())
+  createAt         DateTime           @default(now())
+  updateAt         DateTime           @default(now()) @updatedAt
+  name             String             @unique
+  sort             Int                @default(0)
+  status           Boolean            @default(true)
+  comment          String?            @db.LongText
+  sys_menu_on_role sys_menu_on_role[]
+  sys_user         sys_user[]
+}

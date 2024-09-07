@@ -1,0 +1,31 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@app/prisma/(.*)": "<rootDir>/../libs/prisma/src/$1",
+    "@app/prisma": "<rootDir>/../libs/prisma/src",
+    "@app/file/(.*)": "<rootDir>/../libs/file/src/$1",
+    "@app/file": "<rootDir>/../libs/file/src",
+    "@app/hash/(.*)": "<rootDir>/../libs/hash/src/$1",
+    "@app/hash": "<rootDir>/../libs/hash/src",
+    "@app/request/(.*)": "<rootDir>/../libs/request/src/$1",
+    "@app/request": "<rootDir>/../libs/request/src",
+    "@app/utils/(.*)": "<rootDir>/../libs/utils/src/$1",
+    "@app/utils": "<rootDir>/../libs/utils/src",
+    "@app/utils/random-name/(.*)": "<rootDir>/../libs/utils/random-name/src/$1",
+    "@app/utils/random-name": "<rootDir>/../libs/utils/random-name/src",
+    "@app/sys-config/(.*)": "<rootDir>/../libs/sys-config/src/$1",
+    "@app/sys-config": "<rootDir>/../libs/sys-config/src",
+    "@app/redis-cache/(.*)": "<rootDir>/../libs/redis-cache/src/$1",
+    "@app/redis-cache": "<rootDir>/../libs/redis-cache/src"
+  }
+}
