@@ -3,6 +3,7 @@ import { PrismaService } from '@app/prisma';
 import { SysUserEntity } from '@app/prisma/sys.user.entity/sys.user.entity';
 import { SysConfigService } from '@app/sys-config';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -11,7 +12,8 @@ export class AuthService {
     private readonly jwt: JwtService,
     private readonly prisma: PrismaService,
     private readonly hash: HashService,
-    private readonly sysConfig: SysConfigService
+    private readonly sysConfig: SysConfigService,
+    private readonly config: ConfigService
   ) {
     sysConfig.loadConfig();
   }
@@ -31,7 +33,9 @@ export class AuthService {
       sub: user.id,
     };
     return {
-      access_token: this.jwt.sign(payload),
+      access_token: this.jwt.sign(payload, {
+        expiresIn: this.config.getOrThrow('JWT_EXPIRES'),
+      }),
     };
   }
 
