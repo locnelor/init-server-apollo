@@ -68,6 +68,7 @@ type Query {
   getRoles: [SysRoleEntity!]!
   getMenuByRoleId(id: Int!): [SysRoleEntity!]!
   getRoleUsers(id: Int!, order: String, skip: Int, take: Int): SysUserPagination!
+  testGetUserList(skip: Int! = 0, take: Int! = 15): SysUserPagination!
 }
 
 type Mutation {
