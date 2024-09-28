@@ -61,6 +61,26 @@ type SysUserPagination {
   data: [SysUserEntity!]!
 }
 
+type SysLinkEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+  href: String!
+}
+
+type SysKgnbEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  creatorId: Int!
+  creator: SysUserEntity
+  targetId: Int!
+  target: SysUserEntity
+  context: String!
+  time: DateTime!
+}
+
 type Query {
   hello: String!
   viewer: SysUserEntity!
@@ -69,6 +89,8 @@ type Query {
   getMenuByRoleId(id: Int!): [SysRoleEntity!]!
   getRoleUsers(id: Int!, order: String, skip: Int, take: Int): SysUserPagination!
   testGetUserList(skip: Int! = 0, take: Int! = 15): SysUserPagination!
+  getLink: [SysLinkEntity!]!
+  getKgnb: [SysKgnbEntity!]!
 }
 
 type Mutation {
@@ -76,4 +98,11 @@ type Mutation {
   setUserRole(userId: Int!, roleId: Int!): SysUserEntity!
   addMenu(menuId: Int!, roleId: Int!): SysMenuOnRoleEntity!
   delMenu(menuId: Int!, roleId: Int!): SysMenuOnRoleEntity!
+  createLink(name: String!, href: String!): SysLinkEntity!
+  updateLink(id: Int!, name: String!, href: String!): SysLinkEntity!
+  deleteLink(id: Int!): SysLinkEntity!
+  deleteLinks(ids: [Int!]!): Int!
+  createKgnb(targetId: Int!, context: String!, time: String!): SysKgnbEntity!
+  updateKgnb(targetId: Int!, context: String!, time: String!, id: Int!): SysKgnbEntity!
+  deleteKgnb(id: Int!): SysKgnbEntity!
 }

@@ -16,6 +16,4 @@ export class UserResolver {
   selUsers() {
     return this.prisma.sys_user.findMany({});
   }
-
-
 }

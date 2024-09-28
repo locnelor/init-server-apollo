@@ -10,19 +10,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//用户
 model sys_user {
-  id         Int      @id @default(autoincrement())
-  createAt   DateTime @default(now())
-  updateAt   DateTime @default(now()) @updatedAt
-  hash_key   String   @unique
-  account    String   @unique
-  name       String
-  loginIp    String?
-  password   String
-  role       sys_role @relation(fields: [sys_roleId], references: [id])
-  sys_roleId Int
+  id            Int           @id @default(autoincrement())
+  createAt      DateTime      @default(now())
+  updateAt      DateTime      @default(now()) @updatedAt
+  hash_key      String        @unique
+  account       String        @unique
+  name          String
+  loginIp       String?
+  password      String
+  role          sys_role      @relation(fields: [sys_roleId], references: [id])
+  sys_roleId    Int
+  created_kgnb  sys_kgnb[]    @relation("CreatedKgnb")
+  received_kgnb sys_kgnb[]    @relation("ReceivedKgnb")
+  sys_article   sys_article[]
 }
 
+//权限菜单
 model sys_menu {
   id               Int                @id @default(autoincrement())
   createAt         DateTime           @default(now())
@@ -38,6 +43,7 @@ model sys_menu {
   visible          Boolean            @default(false)
 }
 
+//权限树 on 角色
 model sys_menu_on_role {
   role       sys_role @relation(fields: [sys_roleId], references: [id])
   sys_roleId Int
@@ -47,6 +53,7 @@ model sys_menu_on_role {
   @@id([sys_roleId, sys_menuId])
 }
 
+// 角色
 model sys_role {
   id               Int                @id @default(autoincrement())
   createAt         DateTime           @default(now())
@@ -57,4 +64,59 @@ model sys_role {
   comment          String?            @db.LongText
   sys_menu_on_role sys_menu_on_role[]
   sys_user         sys_user[]
+}
+
+// 阔哥牛逼语录
+model sys_kgnb {
+  id        Int      @id @default(autoincrement())
+  createAt  DateTime @default(now())
+  updateAt  DateTime @default(now()) @updatedAt
+  creator   sys_user @relation("CreatedKgnb", fields: [creatorId], references: [id])
+  creatorId Int
+  target    sys_user @relation("ReceivedKgnb", fields: [targetId], references: [id])
+  targetId  Int
+  context   String   @db.Text
+  time      DateTime @default(now())
+}
+
+//文章
+model sys_article {
+  id         Int                   @id @default(autoincrement())
+  createAt   DateTime              @default(now())
+  updateAt   DateTime              @default(now()) @updatedAt
+  creator    sys_user              @relation(fields: [sys_userId], references: [id])
+  sys_userId Int
+  tags       sys_article_on_tags[]
+  title      String
+  sub_title  String
+  hash_key   String                @unique
+  lock       Boolean
+}
+
+//文章标签多对多表
+model sys_article_on_tags {
+  article       sys_article @relation(fields: [sys_articleId], references: [id])
+  tag           sys_tag     @relation(fields: [sys_tagId], references: [id])
+  sys_articleId Int
+  sys_tagId     Int
+
+  @@id([sys_articleId, sys_tagId])
+}
+
+//文章标签
+model sys_tag {
+  id       Int                   @id @default(autoincrement())
+  createAt DateTime              @default(now())
+  updateAt DateTime              @default(now()) @updatedAt
+  name     String                @unique
+  articles sys_article_on_tags[]
+}
+
+//友链
+model sys_link {
+  id       Int      @id @default(autoincrement())
+  createAt DateTime @default(now())
+  updateAt DateTime @default(now()) @updatedAt
+  name     String
+  href     String
 }
