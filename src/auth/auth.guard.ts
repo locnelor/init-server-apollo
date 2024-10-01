@@ -242,6 +242,7 @@ export class GqlAuthPowerGuard extends AuthGuard("jwt") {
     );
   }
   handleRequest<TUser extends SysUserEntity>(err: any, user: TUser) {
+    if (!this.power) return null
     if (err || !user) {
       throw err || new AuthenticationError('请先登录！');
     }
