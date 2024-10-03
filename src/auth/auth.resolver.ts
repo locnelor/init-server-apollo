@@ -42,6 +42,9 @@ export class AuthResolver {
       },
       data: {
         loginIp: ip
+      },
+      include: {
+        role: true
       }
     })
     user.token = this.authService.getToken(user).access_token

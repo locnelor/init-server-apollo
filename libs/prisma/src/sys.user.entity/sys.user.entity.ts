@@ -27,4 +27,7 @@ export class SysUserEntity extends BaseEntity implements sys_user {
 
   @Field({ nullable: true })
   token?: string
+
+  @Field(() => Boolean)
+  status: boolean
 }

@@ -194,9 +194,11 @@ export class AuthPowerGuard extends AuthGuard("jwt") {
     return super.canActivate(context);
   }
   handleRequest(err, user) {
+    if (!this.power) return null
     if (err || !user) {
       throw err || new UnauthorizedException('请先登录！');
     }
+    if (!this.power.length) return user
     const {
       menu: {
         role
@@ -246,7 +248,7 @@ export class GqlAuthPowerGuard extends AuthGuard("jwt") {
     if (err || !user) {
       throw err || new AuthenticationError('请先登录！');
     }
-    if (!this.power) {
+    if (!this.power.length) {
       return user;
     }
     const {

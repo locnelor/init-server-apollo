@@ -11,16 +11,18 @@ datasource db {
 }
 
 model sys_user {
-  id         Int      @id @default(autoincrement())
-  createAt   DateTime @default(now())
-  updateAt   DateTime @default(now()) @updatedAt
-  hash_key   String   @unique
-  account    String   @unique
+  id         Int        @id @default(autoincrement())
+  createAt   DateTime   @default(now())
+  updateAt   DateTime   @default(now()) @updatedAt
+  hash_key   String     @unique
+  account    String     @unique
   name       String
   loginIp    String?
   password   String
-  role       sys_role @relation(fields: [sys_roleId], references: [id])
+  role       sys_role   @relation(fields: [sys_roleId], references: [id])
   sys_roleId Int
+  sys_task   sys_task[]
+  status     Boolean    @default(false)
 }
 
 model sys_menu {
@@ -57,4 +59,85 @@ model sys_role {
   comment          String?            @db.LongText
   sys_menu_on_role sys_menu_on_role[]
   sys_user         sys_user[]
+}
+
+//题目
+model sys_question {
+  id            Int             @id @default(autoincrement())
+  createAt      DateTime        @default(now())
+  updateAt      DateTime        @default(now()) @updatedAt
+  photos        sys_photo[]
+  answers       sys_answer[]
+  sys_task_item sys_task_item[]
+  top           sys_video?      @relation("TopRelation", fields: [top_id], references: [id])
+  top_id        Int?            @unique
+  ass           sys_video?      @relation("AssRelation", fields: [ass_id], references: [id])
+  ass_id        Int?            @unique
+}
+
+//视频
+model sys_video {
+  id       Int      @id @default(autoincrement())
+  createAt DateTime @default(now())
+  updateAt DateTime @default(now()) @updatedAt
+  hash_key String   @unique
+  size     Int
+
+  questionTop sys_question? @relation("TopRelation")
+  questionAss sys_question? @relation("AssRelation")
+}
+
+//题目的答案
+model sys_answer {
+  id             Int           @id @default(autoincrement())
+  sys_question   sys_question? @relation(fields: [sys_questionId], references: [id])
+  sys_questionId Int?
+  photo          sys_photo     @relation(fields: [sys_photoId], references: [id])
+  sys_photoId    Int
+}
+
+//图片
+model sys_photo {
+  id                   Int                    @id @default(autoincrement())
+  createAt             DateTime               @default(now())
+  updateAt             DateTime               @default(now()) @updatedAt
+  sys_question         sys_question?          @relation(fields: [sys_questionId], references: [id])
+  sys_questionId       Int?
+  sys_answer           sys_answer[]
+  hash_key             String                 @unique
+  sys_task_item_answer sys_task_item_answer[]
+}
+
+//用户答题
+model sys_task {
+  id            Int             @id @default(autoincrement())
+  createAt      DateTime        @default(now())
+  updateAt      DateTime        @default(now()) @updatedAt
+  user          sys_user        @relation(fields: [sys_userId], references: [id])
+  sys_userId    Int
+  sys_task_item sys_task_item[]
+  corrects      Int
+}
+
+//答题记录，一个题目仅能够答题一次
+model sys_task_item {
+  id             Int                    @id @default(autoincrement())
+  createAt       DateTime               @default(now())
+  updateAt       DateTime               @default(now()) @updatedAt
+  task           sys_task               @relation(fields: [sys_taskId], references: [id])
+  sys_taskId     Int
+  question       sys_question           @relation(fields: [sys_questionId], references: [id])
+  sys_questionId Int
+  correct        Boolean
+  answers        sys_task_item_answer[]
+
+  @@unique([sys_taskId, sys_questionId])
+}
+
+model sys_task_item_answer {
+  id              Int            @id @default(autoincrement())
+  sys_task_item   sys_task_item? @relation(fields: [sys_task_itemId], references: [id])
+  sys_task_itemId Int?
+  photo           sys_photo      @relation(fields: [sys_photoId], references: [id])
+  sys_photoId     Int
 }

@@ -52,28 +52,122 @@ type SysUserEntity {
   sys_roleId: Int!
   role: SysRoleEntity
   token: String
+  status: Boolean!
 }
 
 type SysUserPagination {
-  skip: Int!
-  take: Int!
+  page: Int!
+  size: Int!
   total: Int!
   data: [SysUserEntity!]!
+}
+
+type SysAnswerEntity {
+  id: Int!
+  sys_questionId: Int!
+  sys_question: SysQuestionEntity
+  sys_photoId: String!
+  photo: SysPhotoEntity
+}
+
+type SysTaskEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  sys_userId: Int!
+  user: SysUserEntity
+  corrects: Int!
+  sys_task_item: [SysTaskItemEntity!]
+}
+
+type SysTaskItemEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  sys_taskId: Int!
+  task: SysTaskEntity
+  sys_questionId: Int!
+  question: SysQuestionEntity
+  correct: Boolean!
+  answers: [SysTaskItemAnswerEntity!]
+}
+
+type SysTaskItemAnswerEntity {
+  id: Int!
+  sys_task_item: SysTaskItemEntity
+  sys_task_itemId: Int!
+  photo: SysPhotoEntity
+  sys_photoId: Int!
+}
+
+type SysPhotoEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  sys_questionId: Int!
+  sys_question: SysQuestionEntity
+  hash_key: String!
+  sys_answer: [SysAnswerEntity!]
+  sys_task_item_answer: [SysTaskItemAnswerEntity!]
+}
+
+type SysVideoEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  hash_key: String!
+  size: Int!
+  questionTop: SysQuestionEntity
+  questionAss: SysQuestionEntity
+}
+
+type SysQuestionEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  photos: [SysPhotoEntity!]
+  answers: [SysAnswerEntity!]
+  sys_task_items: [SysTaskItemEntity!]
+  top_id: Int!
+  top: SysVideoEntity
+  ass_id: Int!
+  ass: SysVideoEntity
+}
+
+type SysQuestionPagination {
+  page: Int!
+  size: Int!
+  total: Int!
+  data: [SysQuestionPagination!]!
 }
 
 type Query {
   hello: String!
   viewer: SysUserEntity!
-  selUsers: [SysUserEntity!]!
+  selUsers(pagination: PaginationInput!): SysUserPagination!
   getRoles: [SysRoleEntity!]!
   getMenuByRoleId(id: Int!): [SysRoleEntity!]!
   getRoleUsers(id: Int!, order: String, skip: Int, take: Int): SysUserPagination!
   testGetUserList(skip: Int! = 0, take: Int! = 15): SysUserPagination!
+  questionVideoExists(hash_key: String!): Boolean!
+  questionList(pagination: PaginationInput!): SysQuestionPagination!
+}
+
+input PaginationInput {
+  page: Int
+  size: Int = 10
+  order: String = "desc"
 }
 
 type Mutation {
   auth(account: String!, password: String!): SysUserEntity!
+  addUser(account: String!, name: String!, role_id: Int!, status: Boolean): SysUserEntity!
+  updUser(id: Int!, account: String!, name: String!, role_id: Int!, status: Boolean): SysUserEntity!
+  delUser(id: Int!): SysUserEntity!
   setUserRole(userId: Int!, roleId: Int!): SysUserEntity!
   addMenu(menuId: Int!, roleId: Int!): SysMenuOnRoleEntity!
   delMenu(menuId: Int!, roleId: Int!): SysMenuOnRoleEntity!
+  createQuestion(top_id: Int!, ass_id: Int, answers: [Int!]!): SysQuestionEntity!
+  deleteQuestion(id: Int!): SysQuestionEntity!
+  updateQuestion(id: Int!, top_id: Int!, ass_id: Int, answers: [Int!]!): SysQuestionEntity!
 }

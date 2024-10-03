@@ -3,10 +3,10 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 @ObjectType()
 export class Pagination {
   @Field(() => Int)
-  skip: number
+  page: number
 
   @Field(() => Int)
-  take: number
+  size: number
 
   @Field(() => Int)
   total: number

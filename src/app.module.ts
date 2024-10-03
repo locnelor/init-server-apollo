@@ -12,6 +12,7 @@ import { UserModule } from './user/user.module';
 import * as Joi from 'joi';
 import { RedisCacheModule } from '@app/redis-cache';
 import { TestModule } from './test/test.module';
+import { QuestionModule } from './question/question.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -71,6 +72,7 @@ import { TestModule } from './test/test.module';
     RoleModule,
     UserModule,
     TestModule,
+    QuestionModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
