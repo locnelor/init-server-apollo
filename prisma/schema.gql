@@ -63,11 +63,13 @@ type SysUserPagination {
 }
 
 type SysAnswerEntity {
+  type: Int!
   id: Int!
   sys_questionId: Int!
   sys_question: SysQuestionEntity
   sys_photoId: String!
   photo: SysPhotoEntity
+  total: Int!
 }
 
 type SysTaskEntity {
@@ -115,10 +117,16 @@ type SysVideoEntity {
   id: Int!
   createAt: DateTime!
   updateAt: DateTime!
+  status: String!
   hash_key: String!
   size: Int!
   questionTop: SysQuestionEntity
   questionAss: SysQuestionEntity
+}
+
+type SysQuestionOnPhotoEntity {
+  sys_photoId: Int!
+  sys_questionId: Int!
 }
 
 type SysQuestionEntity {
@@ -130,15 +138,16 @@ type SysQuestionEntity {
   sys_task_items: [SysTaskItemEntity!]
   top_id: Int!
   top: SysVideoEntity
-  ass_id: Int!
+  ass_id: Int
   ass: SysVideoEntity
+  sys_question_on_photo: [SysQuestionOnPhotoEntity!]
 }
 
 type SysQuestionPagination {
   page: Int!
   size: Int!
   total: Int!
-  data: [SysQuestionPagination!]!
+  data: [SysQuestionEntity!]!
 }
 
 type Query {
@@ -149,7 +158,8 @@ type Query {
   getMenuByRoleId(id: Int!): [SysRoleEntity!]!
   getRoleUsers(id: Int!, order: String, skip: Int, take: Int): SysUserPagination!
   testGetUserList(skip: Int! = 0, take: Int! = 15): SysUserPagination!
-  questionVideoExists(hash_key: String!): Boolean!
+  questionVideo(id: Int!): SysVideoEntity
+  question(id: Int): SysQuestionEntity
   questionList(pagination: PaginationInput!): SysQuestionPagination!
 }
 
@@ -167,7 +177,12 @@ type Mutation {
   setUserRole(userId: Int!, roleId: Int!): SysUserEntity!
   addMenu(menuId: Int!, roleId: Int!): SysMenuOnRoleEntity!
   delMenu(menuId: Int!, roleId: Int!): SysMenuOnRoleEntity!
+  imageConnect(id: Int!, image: Int!): SysQuestionOnPhotoEntity!
+  imageDisconnect(id: Int!, image: Int!): SysQuestionOnPhotoEntity!
+  questionVideoExists(hash_key: String!): Boolean!
   createQuestion(top_id: Int!, ass_id: Int, answers: [Int!]!): SysQuestionEntity!
   deleteQuestion(id: Int!): SysQuestionEntity!
   updateQuestion(id: Int!, top_id: Int!, ass_id: Int, answers: [Int!]!): SysQuestionEntity!
+  questionSetAnswer(id: Int!, photos: [Int!]!): SysQuestionEntity!
+  questionSetAnswerField(id: Int!, total: Int!): SysAnswerEntity!
 }

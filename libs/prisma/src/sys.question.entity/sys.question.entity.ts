@@ -5,6 +5,7 @@ import { SysPhotoEntity } from "../sys.photo.entity/sys.photo.entity";
 import { SysAnswerEntity } from "../sys.answer.entity/sys.answer.entity";
 import { SysTaskItemEntity } from "../sys.task.item.entity/sys.task.item.entity";
 import { SysVideoEntity } from "../sys.video.entity/sys.video.entity";
+import { SysQuestionOnPhotoEntity } from "../sys.question.on.photo.entity/sys.question.on.photo.entity";
 
 @ObjectType()
 export class SysQuestionEntity extends BaseEntity implements sys_question {
@@ -23,9 +24,12 @@ export class SysQuestionEntity extends BaseEntity implements sys_question {
   @Field(() => SysVideoEntity, { nullable: true })
   top?: SysVideoEntity;
 
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   ass_id: number;
 
   @Field(() => SysVideoEntity, { nullable: true })
   ass?: SysVideoEntity;
+
+  @Field(() => [SysQuestionOnPhotoEntity], { nullable: true })
+  sys_question_on_photo?: SysQuestionOnPhotoEntity[]
 }

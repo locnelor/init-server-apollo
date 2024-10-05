@@ -67,5 +67,8 @@
         "libs/redis-cache/src/*"
       ]
     }
-  }
+  },
+  "exclude": [
+    "assets"
+  ]
 }

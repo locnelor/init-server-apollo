@@ -63,28 +63,45 @@ model sys_role {
 
 //题目
 model sys_question {
-  id            Int             @id @default(autoincrement())
-  createAt      DateTime        @default(now())
-  updateAt      DateTime        @default(now()) @updatedAt
-  photos        sys_photo[]
-  answers       sys_answer[]
-  sys_task_item sys_task_item[]
-  top           sys_video?      @relation("TopRelation", fields: [top_id], references: [id])
-  top_id        Int?            @unique
-  ass           sys_video?      @relation("AssRelation", fields: [ass_id], references: [id])
-  ass_id        Int?            @unique
+  id                    Int                     @id @default(autoincrement())
+  createAt              DateTime                @default(now())
+  updateAt              DateTime                @default(now()) @updatedAt
+  answers               sys_answer[]
+  sys_task_item         sys_task_item[]
+  top                   sys_video?              @relation("TopRelation", fields: [top_id], references: [id])
+  top_id                Int?                    @unique
+  ass                   sys_video?              @relation("AssRelation", fields: [ass_id], references: [id])
+  ass_id                Int?                    @unique
+  sys_question_on_photo sys_question_on_photo[]
+}
+
+enum VideoStatus {
+  LOADING
+  ERROR
+  FINISH
 }
 
 //视频
 model sys_video {
-  id       Int      @id @default(autoincrement())
-  createAt DateTime @default(now())
-  updateAt DateTime @default(now()) @updatedAt
-  hash_key String   @unique
+  id       Int         @id @default(autoincrement())
+  createAt DateTime    @default(now())
+  updateAt DateTime    @default(now()) @updatedAt
+  hash_key String      @unique
   size     Int
+  status   VideoStatus @default(LOADING)
 
   questionTop sys_question? @relation("TopRelation")
   questionAss sys_question? @relation("AssRelation")
+}
+
+model sys_question_on_photo {
+  photo    sys_photo    @relation(fields: [sys_photoId], references: [id])
+  question sys_question @relation(fields: [sys_questionId], references: [id])
+
+  sys_photoId    Int
+  sys_questionId Int
+
+  @@id([sys_photoId, sys_questionId])
 }
 
 //题目的答案
@@ -92,20 +109,21 @@ model sys_answer {
   id             Int           @id @default(autoincrement())
   sys_question   sys_question? @relation(fields: [sys_questionId], references: [id])
   sys_questionId Int?
-  photo          sys_photo     @relation(fields: [sys_photoId], references: [id])
-  sys_photoId    Int
+  photo          sys_photo?    @relation(fields: [sys_photoId], references: [id])
+  sys_photoId    Int?
+  type           Int           @default(0)
+  total          Int           @default(0)
 }
 
 //图片
 model sys_photo {
-  id                   Int                    @id @default(autoincrement())
-  createAt             DateTime               @default(now())
-  updateAt             DateTime               @default(now()) @updatedAt
-  sys_question         sys_question?          @relation(fields: [sys_questionId], references: [id])
-  sys_questionId       Int?
-  sys_answer           sys_answer[]
-  hash_key             String                 @unique
-  sys_task_item_answer sys_task_item_answer[]
+  id                    Int                     @id @default(autoincrement())
+  createAt              DateTime                @default(now())
+  updateAt              DateTime                @default(now()) @updatedAt
+  hash_key              String                  @unique
+  sys_question_on_photo sys_question_on_photo[]
+  sys_task_item_answer  sys_task_item_answer[]
+  sys_answer            sys_answer[]
 }
 
 //用户答题

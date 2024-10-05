@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BinaryLike, createHash } from "crypto"
+import { BinaryLike, createHash, subtle } from "crypto"
 
 
 @Injectable()
@@ -15,5 +15,11 @@ export class HashService {
   }
   public createUid(args = [] as string[]) {
     return this.md5(this.sha1(`${Math.random()}_${Date.now()}_${args.join("_")}`))
+  }
+  public async sha256(data: BufferSource) {
+    const hashBuffer = await subtle.digest("SHA-256", data)
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    return hashHex;
   }
 }

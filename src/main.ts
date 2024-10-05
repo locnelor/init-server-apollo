@@ -8,6 +8,8 @@ import { ConfigService } from '@nestjs/config';
 // import { PrismaService } from '@app/prisma';
 import { FileService } from '@app/file';
 
+
+
 const bodyParser = require('body-parser');
 require('body-parser-xml')(bodyParser);
 async function bootstrap() {
@@ -40,6 +42,7 @@ async function bootstrap() {
   app.useStaticAssets('build');
   app.useStaticAssets('resource');
   app.useStaticAssets('public');
+  app.useStaticAssets('../assets');
 
   const options = new DocumentBuilder()
     .setTitle(configService.get("TITLE"))

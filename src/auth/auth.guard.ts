@@ -110,6 +110,8 @@ const start = async (list: MenuItem[], parentId = 0, parentPath = "", roleId: nu
     console.log(`
 ${menu.name}
 ${menu.path}
+${menu.role}
+${item.power}
 `)
     start(
       other,

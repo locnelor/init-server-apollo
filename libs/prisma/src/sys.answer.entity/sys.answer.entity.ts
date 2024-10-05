@@ -7,6 +7,9 @@ import { SysPhotoEntity } from "../sys.photo.entity/sys.photo.entity";
 @ObjectType()
 export class SysAnswerEntity implements sys_answer {
   @Field(() => Int)
+  type: number;
+
+  @Field(() => Int)
   id: number;
 
   @Field(() => Int)
@@ -20,4 +23,7 @@ export class SysAnswerEntity implements sys_answer {
 
   @Field(() => SysPhotoEntity, { nullable: true })
   photo?: SysPhotoEntity;
+
+  @Field(() => Int)
+  total: number
 }

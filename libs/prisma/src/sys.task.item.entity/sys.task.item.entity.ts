@@ -11,7 +11,7 @@ export class SysTaskItemEntity extends BaseEntity implements sys_task_item {
   sys_taskId: number;
 
   @Field(() => SysTaskEntity, { nullable: true })
-  task?: SysTaskEntity;
+  task?: SysTaskEntity; 
 
   @Field(() => Int)
   sys_questionId: number;
